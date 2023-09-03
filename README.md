@@ -1,66 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Tugas: Buatlah system pengaduan sederhana dari skema database di atas.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Keterangan:** Sistem Pengaduan adalah sebuah platform yang dirancang untuk memfasilitasi masyarakat dalam menyampaikan keluhan, masukan, dan pengaduan terkait berbagai aspek layanan dan kondisi di suatu wilayah. Sistem ini bertujuan untuk meningkatkan transparansi, akuntabilitas, dan responsivitas pemerintah dalam menangani isu-isu yang dihadapi oleh warga, serta memperkuat hubungan antara pemerintah dan masyarakat.
 
-## About Laravel
+Dengan menggunakan Sistem Pengaduan, warga dapat dengan mudah mengajukan pengaduan melalui situs web resmi. Mekanisme ini memberikan akses yang lebih luas dan fleksibel bagi masyarakat untuk menyampaikan masukan mereka, tanpa harus datang langsung ke kantor pemerintah.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+    **Ketentuan**:
+    1. |v| Implementasikan database seeder untuk insert data dummy category
+    2. |v| Implementasikan Laravel Media Library Package untuk upload bukti laporan
+    3. |v| Buat tabel laporan menggunakan Yajra DataTables
+    4. |v| Buat halaman riwayat perubahan status dari laporan (report tracker)
+    5. |v| Buat halaman report log menggunakan Laravel Activity Log Package
+    6. |v| Buat dokumentasi, sertakan gambar dari halaman atau fitur yang dibuat
+    7. |v| Upload ke GitLab
+    8. |v| Batas akhir pengumpulan 04/09/2023 17:00 WIB (http://adslink.id/TaskSubmission)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Link Video Demo Program :
+[link_video_demo_program](https://drive.google.com/drive/folders/1-xLYuWs9cp3E5bvtGpZgzePr7b1SlOeu?usp=sharing)
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Routing : 
 
-## Laravel Sponsors
+## Routing Authentication
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    Route::get('login', [IndexController::class, 'masterLogin'])->name("login");
+    Route::get('register', [IndexController::class, 'masterRegister'])->name("register");
+    Route::post('doLlogin', [IndexController::class, 'doLogin'])->name("doLogin");
+    Route::post('doRegister', [IndexController::class, 'doRegister'])->name("doRegister");
+    Route::get('logout', [IndexController::class, 'logout'])->name("logout");
 
-### Premium Partners
+## Routing admin
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    Route::prefix('admin')->group(function () {
+        Route::get('dashboard', [AdminController::class, 'masterDashboard'])->name("admin.dashboard");
+        Route::prefix('report')->group(function () {
+            Route::get('/', [AdminController::class, 'openReport'])->name("admin.open-report");
+            Route::get('/{id}', [AdminController::class, 'masterReport'])->name("admin.master-report");
+            Route::post('proseslaporan/{id}', [AdminController::class, 'processReport']);
+        });
+        Route::get('activity', [AdminController::class, 'masterActivity'])->name("admin.activity");
+    });
 
-## Contributing
+## Routing Reporter
+    Route::prefix('reporter')->group(function () {
+        Route::get('dashboard', [ReporterController::class, 'reportDashboard'])->name("reporter.dashboard");
+        Route::get('form', [ReporterController::class, 'reportForm'])->name('report-form');
+        Route::post('form', [ReporterController::class, 'submitReport'])->name('submit-report');
+        Route::get('report/{id}', [ReporterController::class, 'masterReport'])->name("reporter.master-report");
+    });
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Flow aplikasi
 
-## Code of Conduct
+Authentication :
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Pelapor pada awalnya akan melakukan registrasi, setelah akun terbuat, maka pelapor akan masuk menggunakan email mereka.  
 
-## Security Vulnerabilities
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/8f75b8d5-534c-49fd-8b1e-f9b5ebd5b982">
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/f364045e-4d11-4c25-b62e-bd51946bbb30">
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+Halaman Reporter : 
+Pelapor memiliki 3 page yaitu:
+1. dashboard dimana pelapor dapat melihat Laporan yang telah mereka ajukan
+2. form dimana pelapor dapat mengisi form dan mengajukan laporan mereka
+3. report-detail dimana pelapor dapat melihat detail Laporan yang telah mereka ajukan
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/ac2810ee-7887-485f-9ab7-b8df6a89e92f">
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/282f8436-22df-4f7f-b492-99cc52b9c2c7">
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/0efcb0ca-71ba-4559-a592-67518e5d81be">
+
+Halaman Admin : 
+Admin memiliki 3 page yaitu:
+1. dashboard dimana admin dapat melihat semua laporan yang ada
+2. report-detail dimana admin dapat memproses laporan yang ada apabila status pending atau admin merupakan penanggung jawab laporan
+3. activity dimana admin dapat melihat semua activity admin yang ada
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/9dee10b0-0a8b-45f5-b566-8d67be5c951c">
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/01ef8409-8369-4e35-a030-d0e98d4ebb21">
+<img width="1280" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/caafc52e-bb66-4555-a2ff-79e7f97fff6f">
+
