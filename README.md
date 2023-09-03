@@ -10,6 +10,8 @@ Dengan menggunakan Sistem Pengaduan, warga dapat dengan mudah mengajukan pengadu
 ### Flow aplikasi
 
 Authentication :
-<img width="400" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/8f75b8d5-534c-49fd-8b1e-f9b5ebd5b982">
-<img width="400" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/f364045e-4d11-4c25-b62e-bd51946bbb30">
 
+<img width="640" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/8f75b8d5-534c-49fd-8b1e-f9b5ebd5b982">
+<img width="640" alt="image" src="https://github.com/AntonioCR11/ads_report_system/assets/99940538/f364045e-4d11-4c25-b62e-bd51946bbb30">
+
+Pelapoer pada awalnya akan melakukan registrasi, setelah akun terbuat, maka pelapor akan masuk menggunakan email mereka.
