@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
     3. |v| Buat tabel laporan menggunakan Yajra DataTables
     4. |v| Buat halaman riwayat perubahan status dari laporan (report tracker)
     5. |v| Buat halaman report log menggunakan Laravel Activity Log Package
-    6. || Buat dokumentasi, sertakan gambar dari halaman atau fitur yang dibuat
-    7. || Upload ke GitLab
-    8. || Batas akhir pengumpulan 04/09/2023 17:00 WIB (http://adslink.id/TaskSubmission)
+    6. |v| Buat dokumentasi, sertakan gambar dari halaman atau fitur yang dibuat
+    7. |v| Upload ke GitLab
+    8. |v| Batas akhir pengumpulan 04/09/2023 17:00 WIB (http://adslink.id/TaskSubmission)
 */
 
 Route::get('/', function () {
@@ -23,7 +23,9 @@ Route::get('/', function () {
 
 # Authentication
 Route::get('login', [IndexController::class, 'masterLogin'])->name("login");
+Route::get('register', [IndexController::class, 'masterRegister'])->name("register");
 Route::post('doLlogin', [IndexController::class, 'doLogin'])->name("doLogin");
+Route::post('doRegister', [IndexController::class, 'doRegister'])->name("doRegister");
 Route::get('logout', [IndexController::class, 'logout'])->name("logout");
 
 # Routing admin
@@ -44,6 +46,11 @@ Route::prefix('admin')->group(function () {
     Route::get('activity', [AdminController::class, 'masterActivity'])->name("admin.activity");
 });
 
-# Form Report
-Route::get('report', [ReporterController::class, 'reportForm'])->name('report-form');
-Route::post('report', [ReporterController::class, 'submitReport'])->name('submit-report');
+Route::prefix('reporter')->group(function () {
+    Route::get('dashboard', [ReporterController::class, 'reportDashboard'])->name("reporter.dashboard");
+    # Form Report
+    Route::get('form', [ReporterController::class, 'reportForm'])->name('report-form');
+    Route::post('form', [ReporterController::class, 'submitReport'])->name('submit-report');
+
+    Route::get('report/{id}', [ReporterController::class, 'masterReport'])->name("reporter.master-report");
+});

@@ -96,7 +96,7 @@
         $responsible_admin = $report->tracks[0]->user->id;
     }
 @endphp
-@if ($responsible_admin == $activeUser->id || $report->status == 'Pending')
+@if (($responsible_admin == $activeUser->id || $report->status == 'Pending') && !$activeUser->identity_number)
     <div class="border-bottom border-dark py-2">
         <h5>Form Penanganan</h5>
         @if ($report->status == 'Pending')

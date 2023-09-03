@@ -2,35 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ReportsDataTable;
+use App\DataTables\Scopes\ActiveUser;
 use App\Models\Report;
 use App\Models\Reporter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ReporterController extends Controller
 {
+    public function reportDashboard(ReportsDataTable $dataTable)
+    {
+        $activeUser = Reporter::find(Session::get('reporter_id'));
+        $page = 'dashboard';
+        return $dataTable->addScope(new ActiveUser())->render('reporter.reporter_dashboard', compact('activeUser', 'page'));
+    }
     public function reportForm()
     {
-        return view('reporter.report_form');
+        $activeUser = Reporter::find(Session::get('reporter_id'));
+        $page = 'report';
+        return view('reporter.report_form', compact('activeUser', 'page'));
     }
     public function submitReport(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone_number' => 'required|numeric',
-            'identity_type' => 'required',
-            'identity_number' => 'required',
-            'pob' => 'required',
-            'dob' => 'required',
-            'address' => 'required',
             'title' => 'required',
-            'description' => 'required',
-            // 'foto' => ['required', new ImageCount(count(($request->file("foto") != null) ? $request->file("foto") : []))]
+            'description' => 'required'
         ]);
-        $reporter = Reporter::where('email', $request->email)->first();
-        if (!$reporter) {
-            $reporter = Reporter::create($request->all());
-        }
+        $reporter = Reporter::find(Session::get('reporter_id'));
 
         $dateNow = date('Ymd');
         $reports = Report::where(
@@ -60,5 +60,14 @@ class ReporterController extends Controller
         //         ->toMediaCollection();
         // }
         return back()->with('successMessage', 'Laporan berhasil disubmit!');
+    }
+    public function masterReport(Request $request)
+    {
+        $id = $request->id;
+        $report = Report::find($id);
+        $activeUser = Reporter::find(Session::get('reporter_id'));
+        $page = 'report';
+        $mediaItems = $report->getMedia("*");
+        return view("reporter.report_detail", compact('report', 'activeUser', 'page', 'mediaItems'));
     }
 }

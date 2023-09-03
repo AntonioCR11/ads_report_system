@@ -10,11 +10,11 @@
             <ul class="navbar-nav me-3">
                 <li class="nav-item">
                     <a class="nav-link {{ $page == 'dashboard' ? 'border-bottom border-dark' : '' }} "
-                        aria-current="page" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                        aria-current="page" href="{{ route('reporter.dashboard') }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ $page == 'activity' ? 'border-bottom border-dark' : '' }}"
-                        href="{{ route('admin.activity') }}">Activity</a>
+                    <a class="nav-link {{ $page == 'report' ? 'border-bottom border-dark' : '' }}"
+                        href="{{ route('report-form') }}">Report</a>
                 </li>
             </ul>
             <a href="{{ route('logout') }}">

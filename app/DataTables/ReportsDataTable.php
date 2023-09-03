@@ -2,8 +2,13 @@
 
 namespace App\DataTables;
 
+use App\DataTables\Scopes\ActiveUser;
 use App\Models\Report;
+use App\Models\Reporter;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -21,6 +26,13 @@ class ReportsDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+        if (Session::get('reporter_id')) {
+
+            return (new EloquentDataTable($query))
+                ->rawColumns(['title'])
+                ->addColumn('title', '<a class="pe-auto cursor-pointer" href="/reporter/report/{{$id}}">{{$title}}</a>')
+                ->setRowId('row-{{$id}}');
+        }
         return (new EloquentDataTable($query))
             ->rawColumns(['title'])
             ->addColumn('title', '<a class="pe-auto cursor-pointer" onclick="reportClicked({{$id}})">{{$title}}</a>')

@@ -22,7 +22,8 @@
                             <form action="{{ route('doLogin') }}" method="POST">
                                 @csrf
                                 <div class="form-group row mb-2">
-                                    <label for="username"class="col-md-4 col-form-label text-md-right">Username</label>
+                                    <label for="username"class="col-md-4 col-form-label text-md-right">Username/
+                                        Email</label>
                                     <div class="col">
                                         <input type="text" id="username" name="username" value="{{ old('username') }}"
                                             class="form-control" required autofocus>

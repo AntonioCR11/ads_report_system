@@ -18,9 +18,9 @@ class ReporterFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'email' => fake()->safeEmail(),
+            'email' => fake()->unique()->safeEmail(),
             'phone_number' => fake()->phoneNumber(),
-            'identity_type' => fake()->word(),
+            'identity_type' => fake()->randomElement(['KTP', 'SIM']),
             'identity_number' => fake()->numerify('###################'),
             'pob' => fake()->city(),
             'dob' => fake()->date(),
