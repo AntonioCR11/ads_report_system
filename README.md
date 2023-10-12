@@ -15,12 +15,6 @@ Dengan menggunakan Sistem Pengaduan, warga dapat dengan mudah mengajukan pengadu
     7. |v| Upload ke GitLab
     8. |v| Batas akhir pengumpulan 04/09/2023 17:00 WIB (http://adslink.id/TaskSubmission)
 
-### Link Video Demo Program :
-[link_video_demo_program](https://drive.google.com/drive/folders/1-xLYuWs9cp3E5bvtGpZgzePr7b1SlOeu?usp=sharing)
-
-
-
-
 # Routing : 
 
 ## Routing Authentication
